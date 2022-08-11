@@ -8,7 +8,7 @@
   </head>
   <body></body>
   <script>
-    function calculateTeamFinanceReport(salaries, team) {
+    /* function calculateTeamFinanceReport(salaries, team) {
       let managerTaxPercent = parseFloat(salaries.Manager.tax);
 
       let managerTaxes = (salaries.Manager.salary * managerTaxPercent) / 100;
@@ -46,6 +46,31 @@
         totalDesignersSalary,
         totalArtistsSalary,
       };
+    } */
+
+    function calculateTeamFinanceReport(salaries, team) {
+      let calculatedSalaries = {};
+      let result = {
+        totalBudgetTeam: 0,
+      };
+      Object.entries(salaries).forEach(([key, value]) => {
+        const taxPercent = parseFloat(value.tax);
+        const salary = (value.salary / (100 - taxPercent)) * 100;
+        calculatedSalaries[key] = salary;
+      });
+      team.forEach((worker) => {
+        const salary = calculatedSalaries[worker.specialization];
+        if (salary !== undefined) {
+          const resultKey = "totalBudget" + worker.specialization;
+          const existingSpecSum = result[resultKey] || 0;
+          result[resultKey] = existingSpecSum + salary;
+          result.totalBudgetTeam += salary;
+        }
+      });
+      Object.entries(result).forEach(([key, value]) => {
+        result[key] = Math.floor(value);
+      });
+      return result;
     }
 
     const salaries1 = {
@@ -63,5 +88,19 @@
 
     const financeReport1 = calculateTeamFinanceReport(salaries1, team1);
     console.log(JSON.stringify(financeReport1));
+
+    const salaries2 = {
+      TeamLead: { salary: 1000, tax: "99%" },
+      Architect: { salary: 9000, tax: "34%" },
+    };
+    const team2 = [
+      { name: "Alexander", specialization: "TeamLead" },
+      { name: "Gaudi", specialization: "Architect" },
+      { name: "Koolhas", specialization: "Architect" },
+      { name: "Foster", specialization: "Architect" },
+      { name: "Napoleon", specialization: "General" },
+    ];
+    const financeReport2 = calculateTeamFinanceReport(salaries2, team2);
+    console.log(JSON.stringify(financeReport2));
   </script>
 </html>
