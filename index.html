@@ -6,36 +6,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body>
-    <h1>Легкі страви на кожен день</h1>
-    <h2>Овочеве рагу</h2>
-    <img src="/ovoshchnoe-ragu.jpg" />
-    <h2>список інгредієнтів на 2 порції:</h2>
-    <ul>
-      <li>2 картоплі</li>
-      <li>1 кабачок</li>
-      <li>1 морквина</li>
-      <li>200 гр. червоної квасолі</li>
-      <li>1 помідор</li>
-      <li>суміш свіжої зелені</li>
-      <li>суміш сухих спецій</li>
-      <li>болгарський перець</li>
-    </ul>
+  <body></body>
+  <script>
+    function calculateTeamFinanceReport(salaries, team) {
+      let managerTaxPercent = parseFloat(salaries.Manager.tax);
 
-    <h2>спосіб приготування</h2>
-    <ol>
-      <li>помити, почистити та порізати інгредієнти</li>
-      <li>
-        викласти на сковорідку, додати спеції та тушкувати 35 хвилин на
-        маленькому вогні
-      </li>
-      <li>
-        спробувати, якщо не готово - готувати ще 10-15 хвилин, в кінці додати
-        свіжу зелень
-      </li>
-    </ol>
-  </body>
-  <script> 
-  alert("Hello!");
+      let managerTaxes = (salaries.Manager.salary * managerTaxPercent) / 100;
+      let managerSalary = managerTaxes + salaries.Manager.salary;
+      let managers = team.filter(function (e) {
+        return e.specialization === "Manager";
+      });
+      let numberOfManagers = managers.length;
+      let totalManagersSalary = managerSalary * numberOfManagers;
+
+      let designerTaxPercent = parseFloat(salaries.Designer.tax);
+      let designerTaxes = (salaries.Designer.salary * designerTaxPercent) / 100;
+      let designerSalary = designerTaxes + salaries.Designer.salary;
+      let designers = team.filter(function (e) {
+        return e.specialization === "Designer";
+      });
+      let numberOfDesigners = designers.length;
+      let totalDesignersSalary = designerSalary * numberOfDesigners;
+
+      let artistTaxPercent = parseFloat(salaries.Artist.tax);
+      let artistTaxes = (salaries.Artist.salary * artistTaxPercent) / 100;
+      let artistSalary = artistTaxes + salaries.Artist.salary;
+      let artists = team.filter(function (e) {
+        return e.specialization === "Artist";
+      });
+      let numberOfArtists = artists.length;
+      let totalArtistsSalary = artistSalary * numberOfArtists;
+
+      let totalTeamSalary =
+        totalArtistsSalary + totalManagersSalary + totalDesignersSalary;
+
+      return {
+        totalTeamSalary,
+        totalManagersSalary,
+        totalDesignersSalary,
+        totalArtistsSalary,
+      };
+    }
+
+    const salaries1 = {
+      Manager: { salary: 1000, tax: "10%" },
+      Designer: { salary: 600, tax: "30%" },
+      Artist: { salary: 1500, tax: "15%" },
+    };
+
+    const team1 = [
+      { name: "Misha", specialization: "Manager" },
+      { name: "Max", specialization: "Designer" },
+      { name: "Vova", specialization: "Designer" },
+      { name: "Leo", specialization: "Artist" },
+    ];
+
+    const financeReport1 = calculateTeamFinanceReport(salaries1, team1);
+    console.log(JSON.stringify(financeReport1));
   </script>
 </html>
